@@ -7,22 +7,24 @@
     </head>
 
     <body>
+    {% with messages = get_flash_messsages %}
+
+        {% endwith %}
         <h1>TO:DO</h1>
         <h2>Sign Up</h2>
         <form action = "/signup" method = "post">
             <div>
                 <label for= "username"> Username: </label>
-                <input type = "text" id = "Username" placeholder="username" name = "username">
+                <input type = "text" id = "Username" placeholder="username" name = "username" required minlength="4">
             </div>
             <div>
                 <label for= "password"> Password: </label>
-                <input type = "password" id = "password" placeholder="password" name = "psssword">
+                <input type = "password" id = "password" placeholder="password" name = "password" required minlength="8">
             </div>
             <diV>
                 <label for="repassword">Re-Enter Pssword: </label>
-                <input type = "password" id = "repassword" placeholder="repassword" name = "repassowrd">
+                <input type = "password" id = "repassword" placeholder="repassword" name = "repassword" required minlength="8">
             </diV>
             <input type = "submit" value = "Sign up">
         </form>
-    </body>
-</html>
+    </body></html>
