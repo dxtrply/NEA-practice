@@ -2,17 +2,22 @@ from flask import Flask, flash, redirect, render_template, request
 from libary.isPresent import isPresent
 from libary.isValidLength import isValidLength
 
-
 app = Flask(__name__)
 app.secret_key = "c5jxYGkbYBylQxxx3LjdJY6db91cmmMcaHHMovBym44"
 
 
-@app.route("/")
+@app.route("/", methods = ["POST", "GET"])
 def home():
-    return render_template("signup.html")
+    if request.method == "GET":
+        return render_template("login.html")
+    
+    return "logging in..."
 
-@app.route("/signup", methods = ["POST"])
+@app.route("/signup", methods = ["POST", "GET"])
 def signup():
+
+    if request.method == "GET":
+        return render_template("signup.html")
 
     formData = request.form
     username = formData.get("username")
@@ -50,9 +55,9 @@ def signup():
         flash("passwords do not match. ")
 
     if not success:
-        return redirect("/")
+        return redirect("/signup")
 
     return "signing up..."
 
 
-app.run(debug=True)
+app.run(debug=True, port=3000)
