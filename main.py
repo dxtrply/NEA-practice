@@ -1,10 +1,15 @@
 from flask import Flask, flash, redirect, render_template, request
+from database import DatabaseHandler
 from libary.isPresent import isPresent
 from libary.isValidLength import isValidLength
+from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
 app.secret_key = "c5jxYGkbYBylQxxx3LjdJY6db91cmmMcaHHMovBym44"
 
+
+db = DatabaseHandler()
+db.createTables()
 
 @app.route("/", methods = ["POST", "GET"])
 def home():
@@ -57,7 +62,16 @@ def signup():
     if not success:
         return redirect("/signup")
 
-    return "signing up..."
+    hashedPassword = generate_password_hash(password)
+
+
+    db_success, message = db.createUser(username, hashedPassword)
+    
+    if not db_success:
+        flash(message)
+        return redirect("/signup")
+
+    return "signup successful..."
 
 
 app.run(debug=True, port=3000)

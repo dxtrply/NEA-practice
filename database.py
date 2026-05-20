@@ -16,11 +16,20 @@ class DatabaseHandler:
 
         conn.close()
     ##CRUD
-    def createUser(self):
-        pass
+    def createUser(self, username, password):
+        try:
+            conn = sql.connect(self.databaseName)
+            cursor = conn.cursor()
 
-    def createUser(self):
-        pass
+            cursor.execute("""INSERT INTO users VALUES(?, ?) """, (username, password))
+            conn.commit()
+
+            conn.close()
+            return True, "sign up successful"
+        except:
+            return False, "an error occured signing up"
+        finally:
+            conn.close()
 
     def readUser(self):
         pass
