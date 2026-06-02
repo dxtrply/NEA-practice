@@ -2,7 +2,7 @@ from flask import Flask, flash, redirect, render_template, request
 from database import DatabaseHandler
 from libary.isPresent import isPresent
 from libary.isValidLength import isValidLength
-from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
 app.secret_key = "c5jxYGkbYBylQxxx3LjdJY6db91cmmMcaHHMovBym44"
@@ -16,7 +16,28 @@ def home():
     if request.method == "GET":
         return render_template("login.html")
     
-    return "logging in..."
+    #return "logging in..."
+
+    if request.method == "POST":
+        formData = request.form
+        username = formData.get("username")
+        password = formData.get("password")
+        
+        success, passwordHash = db.readUserPasswordHash(username)
+
+        if not success or passwordHash == None:
+            flash("Error during lohin,please try again.")
+            return redirect("/")
+        
+        ##check against password
+        if check_password_hash(passwordHash[0], password):
+                flash("invalid login details - please try again")
+                return redirect("/")
+        
+        return redirect("/dashboard")
+
+
+        #return "logging in..."
 
 @app.route("/signup", methods = ["POST", "GET"])
 def signup():
@@ -71,7 +92,12 @@ def signup():
         flash(message)
         return redirect("/signup")
 
-    return "signup successful..."
+    return redirect("/dashboard")
+
+@app.route ("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
+
 
 
 app.run(debug=True, port=3000)
