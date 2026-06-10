@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDo Dashboard</title>
+    <title>TO:DO - {%BLOCK title %}{% ENDBLOCK %}</title>
+    {% BLOCK head %}{% ENDBLOCK %}
 </head>
 <body>
-    <h1>Dashboard</h1>
-    <h2> {{ session.get("currentUser")}} </h2>
-    <a href = "/signout">Sign out</a>
+    {% BLOCK content %}{% ENDBLOCK %}
 </body>
 </html>

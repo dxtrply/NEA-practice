@@ -1,4 +1,5 @@
 import sqlite3 as sql
+from unittest import result
 
 class DatabaseHandler:
     def __init__(self, databaseName = "appData.db"):
@@ -13,6 +14,20 @@ class DatabaseHandler:
                             password TEXT NOT NULL,
                             CHECK( length(password) >= 8)
                        )""")
+        
+
+        cursor.execute("""CREATE TABLE IF NOT EXISTS tasks(
+                        taskId INTEGER PRIMARY KEY AUTOINCREMENT,
+                        description TEXT NOT NULL,
+                        username TEXT NOT NULL,
+                        CHECK (length(description) >= 3),
+                        FOREIGN KEY (username) REFERENCES users(username)
+                        ON DELETE CASCADE
+                        ON UPDATE CASCADE
+                        )
+                        )""")
+
+        cursor.execute("PRAGMA foreign_keys = ON")
 
         conn.close()
     ##CRUD
@@ -56,3 +71,32 @@ class DatabaseHandler:
 
     def deleteUser(self):
         pass
+
+    def createTask(self, description, username):
+        try:
+            conn = sql.connect(self.databaseName)
+            cursor = conn.cursor()
+
+            cursor.execute("""INSERT INTO tasks (description, username)
+                            values
+                            (?, ?)""", (description, username))
+
+            conn.commit()
+            return True, "Task created successfully"
+        except:
+            return False, "an error occured making task"
+        finally:
+            conn.close()
+        
+    def readALLTasks(self, username):
+        try:
+            conn = sql.connect(self.databaseName)
+            cursor = conn.cursor()
+            cursor.execute("""SELECT taskId, description FROM tasks WHERE username = ?""", (username, ))
+            cursor.fetchall()
+            return True, result
+    
+        except:
+            return False, [] #blank list showing no tasks
+        finally:
+            conn.close()
