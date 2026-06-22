@@ -17,4 +17,4 @@ app.register_blueprint(public)
 app.register_blueprint(private)
 
     
-app.run(debug=True, port=3000)
+app.run(debug=True, port=6000)

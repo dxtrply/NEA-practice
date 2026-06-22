@@ -24,7 +24,7 @@ class DatabaseHandler:
                         FOREIGN KEY (username) REFERENCES users(username)
                         ON DELETE CASCADE
                         ON UPDATE CASCADE
-                        )
+                        
                         )""")
 
         cursor.execute("PRAGMA foreign_keys = ON")

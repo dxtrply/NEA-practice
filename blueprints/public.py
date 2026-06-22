@@ -1,7 +1,7 @@
 from flask import Blueprint,  flash, redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 from database import DatabaseHandler
-from libary import isAuthed
+from libary.isAuthed import isAuthed
 from libary.isPresent import isPresent
 from libary.isValidLength import isValidLength
 

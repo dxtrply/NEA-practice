@@ -1,5 +1,5 @@
 from flask import session
 
 
-def usAuthed():
+def isAuthed():
     return session.get("currentUser") != None
